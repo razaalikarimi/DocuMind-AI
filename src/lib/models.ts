@@ -38,7 +38,7 @@ export const User: Model<IUser> =
 // =============================================================================
 
 export interface IWorkspace extends Document {
-  userId: mongoose.Types.ObjectId;
+  userId: string;
   name: string;
   description?: string;
   color: string;
@@ -56,7 +56,7 @@ export interface IWorkspace extends Document {
 
 const WorkspaceSchema = new Schema<IWorkspace>(
   {
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: true, index: true },
+    userId: { type: String, required: true, index: true },
     name: { type: String, required: true },
     description: { type: String },
     color: { type: String, default: "indigo" },
@@ -84,7 +84,7 @@ export const Workspace: Model<IWorkspace> =
 
 export interface IPDF extends Document {
   workspaceId: mongoose.Types.ObjectId;
-  userId: mongoose.Types.ObjectId;
+  userId: string;
   name: string;
   originalName: string;
   fileUrl: string;
@@ -111,7 +111,7 @@ export interface IPDF extends Document {
 const PDFSchema = new Schema<IPDF>(
   {
     workspaceId: { type: Schema.Types.ObjectId, ref: "Workspace", required: true },
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    userId: { type: String, required: true, index: true },
     name: { type: String, required: true },
     originalName: { type: String, required: true },
     fileUrl: { type: String, required: true },
@@ -151,7 +151,7 @@ export const PDFModel: Model<IPDF> =
 
 export interface IChat extends Document {
   workspaceId: mongoose.Types.ObjectId;
-  userId: mongoose.Types.ObjectId;
+  userId: string;
   pdfIds: mongoose.Types.ObjectId[];
   title: string;
   pinned: boolean;
@@ -164,7 +164,7 @@ export interface IChat extends Document {
 const ChatSchema = new Schema<IChat>(
   {
     workspaceId: { type: Schema.Types.ObjectId, ref: "Workspace", required: true },
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    userId: { type: String, required: true, index: true },
     pdfIds: [{ type: Schema.Types.ObjectId, ref: "PDF" }],
     title: { type: String, default: "New Chat" },
     pinned: { type: Boolean, default: false },
@@ -240,7 +240,7 @@ export const Message: Model<IMessage> =
 export interface IEmbedding extends Document {
   pdfId: mongoose.Types.ObjectId;
   workspaceId: mongoose.Types.ObjectId;
-  userId: mongoose.Types.ObjectId;
+  userId: string;
   content: string;
   embedding: number[];
   metadata: {
@@ -257,7 +257,7 @@ const EmbeddingSchema = new Schema<IEmbedding>(
   {
     pdfId: { type: Schema.Types.ObjectId, ref: "PDF", required: true, index: true },
     workspaceId: { type: Schema.Types.ObjectId, ref: "Workspace", required: true, index: true },
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    userId: { type: String, required: true },
     content: { type: String, required: true },
     embedding: { type: [Number], required: true },
     metadata: {
@@ -283,7 +283,7 @@ export const Embedding: Model<IEmbedding> =
 // =============================================================================
 
 export interface IAuditLog extends Document {
-  userId: mongoose.Types.ObjectId;
+  userId: string;
   action: string;
   resource: string;
   resourceId?: mongoose.Types.ObjectId;
@@ -295,7 +295,7 @@ export interface IAuditLog extends Document {
 
 const AuditLogSchema = new Schema<IAuditLog>(
   {
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    userId: { type: String, required: true },
     action: { type: String, required: true },
     resource: { type: String, required: true },
     resourceId: { type: Schema.Types.ObjectId },

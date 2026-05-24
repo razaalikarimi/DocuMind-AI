@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
 
     // Create default workspace
     await Workspace.create({
-      userId: user._id,
+      userId: data.id,
       name: "My Workspace",
       description: "Your default workspace",
       color: "indigo",
